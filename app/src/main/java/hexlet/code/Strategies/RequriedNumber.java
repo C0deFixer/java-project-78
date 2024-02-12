@@ -10,6 +10,5 @@ public class RequriedNumber implements Strategy {
             return false;
         }
         return object instanceof Integer;
-
     }
 }

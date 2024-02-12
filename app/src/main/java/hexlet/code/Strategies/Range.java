@@ -1,25 +1,19 @@
 package hexlet.code.Strategies;
 
-public class Range implements Strategy {
-    private int minValue;
-    private int maxValue;
+import lombok.AllArgsConstructor;
 
-    public Range(int minValue, int maxValue) {
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-    }
+@AllArgsConstructor
+public class Range implements Strategy {
+    private final int minValue;
+    private final int maxValue;
 
     @Override
     public boolean match(Object object) {
         if (object == null) {
             return true;
         }
-        if (object instanceof Integer
+        return object instanceof Integer
                 && (Integer) object >= this.minValue
-                && (Integer) object <= this.maxValue) {
-            return true;
-        } else {
-            return false;
-        }
+                && (Integer) object <= this.maxValue;
     }
 }

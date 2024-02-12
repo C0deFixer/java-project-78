@@ -1,7 +1,5 @@
 package hexlet.code.Strategies;
 
-import java.util.Map;
-
 public class RequriedString implements Strategy {
     public RequriedString() {
     }

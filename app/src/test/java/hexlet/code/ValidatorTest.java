@@ -42,7 +42,7 @@ class ValidatorTest {
     }
 
     @Test
-    void numderTest() {
+    void numberTest() {
         Validator v = new Validator();
 
         NumberSchema schema = v.number();

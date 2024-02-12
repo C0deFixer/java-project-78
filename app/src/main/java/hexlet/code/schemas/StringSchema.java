@@ -2,16 +2,12 @@ package hexlet.code.schemas;
 
 import hexlet.code.Strategies.Contains;
 import hexlet.code.Strategies.RequriedString;
-import hexlet.code.Strategies.minLength;
-import hexlet.code.Validator;
+import hexlet.code.Strategies.MinLength;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
+public class StringSchema extends BaseSchema {
 
-public class StringSchema extends BaseSchema{
-
-
-    public StringSchema(Validator validator) {
-        super(validator);
-    }
 
     public StringSchema required() {
         this.strategesList.add(new RequriedString());
@@ -19,7 +15,7 @@ public class StringSchema extends BaseSchema{
     }
 
     public StringSchema minLength(int minLength) {
-        this.strategesList.add(new minLength(minLength));
+        this.strategesList.add(new MinLength(minLength));
         return this;
     }
 
@@ -27,8 +23,6 @@ public class StringSchema extends BaseSchema{
         this.strategesList.add(new Contains(string));
         return this;
     }
-
-
 
 
 }

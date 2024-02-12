@@ -11,7 +11,7 @@ public class Positive implements Strategy {
         } else if (object instanceof Integer) {
             return (Integer) object > 0;
         }
-
+        return false;
     }
 
 }

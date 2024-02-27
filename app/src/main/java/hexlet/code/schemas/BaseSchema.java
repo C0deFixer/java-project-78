@@ -1,30 +1,36 @@
 package hexlet.code.schemas;
 
-import hexlet.code.Strategies.Strategy;
-
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
-//Implements Validate for universal Client call isValid method
-
-public class BaseSchema implements Validate {
-    protected final List<Strategy> strategesList;
-    //private final Validator validator;
+public class BaseSchema<T> {
+    public List<Predicate<T>> strategyList;
 
     BaseSchema() {
-        this.strategesList = new ArrayList<>();
+        this.strategyList = new ArrayList<>();
     }
 
-    public boolean isValid(Object value) {
-        // Using List of Strategies which does.nt fit/match value (wrong meaning) ;
-        List<Strategy> result = this.strategesList.stream()
-                .filter(strategy -> !strategy.match(value))
-                .toList();
-        return result.isEmpty();
+    public boolean isValid(T val) {
+        /*return strategyList.stream()
+                .filter(strategy-> strategy.match(val))
+                .toList()
+                .isEmpty();*/
+        for (int i = 0; i < strategyList.size(); i++) {
+            if (!strategyList.get(i).test(val)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public BaseSchema required(Object object) {
+    public BaseSchema<T> required() {
+        strategyList.add(val -> val != null);
         return this;
     }
+
+    protected void addStrategy(Predicate<T> strategy) {
+        strategyList.add(strategy);
+    }
+
 }

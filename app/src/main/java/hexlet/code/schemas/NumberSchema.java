@@ -1,28 +1,18 @@
 package hexlet.code.schemas;
 
-import hexlet.code.Strategies.Positive;
-import hexlet.code.Strategies.Range;
-import hexlet.code.Strategies.RequriedNumber;
-
-public class NumberSchema extends BaseSchema implements Validate {
-
+public class NumberSchema<T extends Number> extends BaseSchema<T> {
     public NumberSchema() {
         super();
     }
 
-    public NumberSchema required() {
-        //strategesList.add(new RequriedNumber());
-        strategesList.add(new RequriedNumber());
+    public NumberSchema<T> positive() {
+        super.addStrategy(x -> x == null || x.intValue() > 0);
         return this;
     }
 
-    public NumberSchema positive() {
-        strategesList.add(new Positive());
+    public NumberSchema<T> range(T minValue, T maxValue) {
+        super.addStrategy(x -> x == null || (x.doubleValue() >= minValue.doubleValue()) && (x.doubleValue() <= maxValue.doubleValue()));
         return this;
     }
 
-    public NumberSchema range(int min, int max) {
-        strategesList.add(new Range(min, max));
-        return this;
-    }
 }

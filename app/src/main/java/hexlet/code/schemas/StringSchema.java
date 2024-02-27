@@ -1,28 +1,26 @@
 package hexlet.code.schemas;
 
-import hexlet.code.Strategies.Contains;
-import hexlet.code.Strategies.RequriedString;
-import hexlet.code.Strategies.MinLength;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class StringSchema extends BaseSchema {
+public class StringSchema<T extends String> extends BaseSchema<T> {
+    public StringSchema() {
+        super();
+    }
 
-
-    public StringSchema required() {
-        this.strategesList.add(new RequriedString());
+    @Override
+    public StringSchema<T> required() {
+        super.required();
+        super.addStrategy(x -> !x.isBlank());
         return this;
     }
 
-    public StringSchema minLength(int minLength) {
-        this.strategesList.add(new MinLength(minLength));
+    public StringSchema<T> minLength(int minLength) {
+        super.addStrategy(x -> x == null || x.length() >= minLength);
         return this;
     }
 
-    public StringSchema contains(String string) {
-        this.strategesList.add(new Contains(string));
+    public StringSchema<T> contains(String val) {
+        super.addStrategy(x -> x == null || x.contains(val));
         return this;
     }
-
 
 }

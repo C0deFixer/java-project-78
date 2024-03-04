@@ -14,7 +14,7 @@ public class MapSchema<R, T> extends BaseSchema<T> {
 
     @Override
     public BaseSchema<T> required() {
-    //public BaseSchema<Map<T, R>> required() {
+        //public BaseSchema<Map<T, R>> required() {
         super.required();
         strategyList.add(1, x -> x instanceof Map<?, ?>);
         return this;
@@ -25,8 +25,8 @@ public class MapSchema<R, T> extends BaseSchema<T> {
         return this;
     }
 
-    public void shape(Map<R, BaseSchema<T>> schemas) {
-        this.schemas = schemas;
+    public void shape(Map<R, BaseSchema<T>> schemasMap) {
+        this.schemas = schemasMap;
     }
 
     public boolean isValid(Map<R, T> val) {

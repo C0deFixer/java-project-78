@@ -9,17 +9,17 @@ public class StringSchema<T> extends BaseSchema<T> {
     @Override
     public StringSchema<T> required() {
         super.required();
-        strategyList.add(1, x -> x instanceof String && !((String)x).isBlank());
+        strategyList.add(1, x -> x instanceof String && !((String) x).isBlank());
         return this;
     }
 
     public StringSchema<T> minLength(int minLength) {
-        strategyList.add(x -> ((String)x).length() >= minLength);
+        strategyList.add(x -> ((String) x).length() >= minLength);
         return this;
     }
 
     public StringSchema<T> contains(String val) {
-        strategyList.add(x -> ((String)x).contains(val));
+        strategyList.add(x -> ((String) x).contains(val));
         return this;
     }
 

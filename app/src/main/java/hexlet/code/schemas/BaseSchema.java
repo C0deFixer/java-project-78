@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class BaseSchema<T> {
-    List<Predicate<T>> strategyList;
-    boolean required = false; //canceling all other verifications by default until required is call
+    protected List<Predicate<T>> strategyList;
+    protected boolean required = false; //canceling all other verifications by default until required is call
 
     BaseSchema() {
         this.strategyList = new LinkedList<>(); //Using LinkedList cause order of Predicate validation may be important
     }
 
+    /**
+     * @param val The value to be verified.
+     * @return support only primitive values
+     */
     public boolean isValid(T val) {
         if (!this.required) {
             return true;
@@ -30,7 +34,7 @@ public class BaseSchema<T> {
     }
 
     /**
-     @return In subclasses instance verification has to be added
+     * @return In subclasses instance verification has to be added
      */
     public BaseSchema<T> required() {
         this.required = true;
@@ -38,5 +42,6 @@ public class BaseSchema<T> {
         strategyList.add(0, val -> val != null);
         return this;
     }
+
 
 }

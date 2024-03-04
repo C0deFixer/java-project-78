@@ -3,7 +3,7 @@ package hexlet.code.schemas;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class MapSchema<R, T> extends BaseSchema<T> {
+public final class MapSchema<R, T> extends BaseSchema<T> {
     //public class MapSchema<T, R> extends BaseSchema<Map<T, R>> {
     private Map<R, BaseSchema<T>> schemas;
     //private Map<T, BaseSchema<Map<T,R>>> schemas;
@@ -13,14 +13,14 @@ public class MapSchema<R, T> extends BaseSchema<T> {
     }
 
     @Override
-    public BaseSchema<T> required() {
+    BaseSchema<T> required() {
         //public BaseSchema<Map<T, R>> required() {
         super.required();
         strategyList.add(1, x -> x instanceof Map<?, ?>);
         return this;
     }
 
-    public MapSchema<R, T> sizeof(int val) {
+    MapSchema<R, T> sizeof(int val) {
         strategyList.add(x -> ((Map) x).size() >= val);
         return this;
     }

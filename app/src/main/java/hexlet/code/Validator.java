@@ -7,7 +7,7 @@ import hexlet.code.schemas.StringSchema;
 import java.util.Map;
 
 
-public class Validator<R, T> {
+public final class Validator<R, T> {
     public StringSchema<?> string() {
         return new StringSchema<String>();
     }

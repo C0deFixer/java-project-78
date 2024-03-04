@@ -1,11 +1,12 @@
 package hexlet.code.schemas;
 
 
-public class StringSchema<T> extends BaseSchema<T> {
+public final class StringSchema<T> extends BaseSchema<T> {
     public StringSchema() {
         super();
     }
 
+    //
     @Override
     public StringSchema<T> required() {
         super.required();

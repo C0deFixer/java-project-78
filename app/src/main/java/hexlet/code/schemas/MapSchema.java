@@ -13,14 +13,14 @@ public final class MapSchema<R, T> extends BaseSchema<T> {
     }
 
     @Override
-    BaseSchema<T> required() {
+    public BaseSchema<T> required() {
         //public BaseSchema<Map<T, R>> required() {
         super.required();
         strategyList.add(1, x -> x instanceof Map<?, ?>);
         return this;
     }
 
-    MapSchema<R, T> sizeof(int val) {
+    public MapSchema<R, T> sizeof(int val) {
         strategyList.add(x -> ((Map) x).size() >= val);
         return this;
     }

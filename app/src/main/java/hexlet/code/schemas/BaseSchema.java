@@ -30,9 +30,9 @@ public class BaseSchema<T> {
     }
 
     /**
-     * In subclasses instance verification has to be added
+     @return In subclasses instance verification has to be added
      */
-    BaseSchema<T> required() {
+    public BaseSchema<T> required() {
         this.required = true;
         //index 0 null check always first
         strategyList.add(0, val -> val != null);

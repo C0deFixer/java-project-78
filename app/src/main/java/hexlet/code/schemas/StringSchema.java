@@ -1,7 +1,7 @@
 package hexlet.code.schemas;
 
 
-public class StringSchema<T extends String> extends BaseSchema<T> {
+public class StringSchema<T> extends BaseSchema<T> {
     public StringSchema() {
         super();
     }
@@ -9,17 +9,17 @@ public class StringSchema<T extends String> extends BaseSchema<T> {
     @Override
     public StringSchema<T> required() {
         super.required();
-        super.addStrategy(x -> !x.isBlank());
+        strategyList.add(1, x -> x instanceof String && !((String)x).isBlank());
         return this;
     }
 
     public StringSchema<T> minLength(int minLength) {
-        super.addStrategy(x -> x == null || x.length() >= minLength);
+        strategyList.add(x -> ((String)x).length() >= minLength);
         return this;
     }
 
     public StringSchema<T> contains(String val) {
-        super.addStrategy(x -> x == null || x.contains(val));
+        strategyList.add(x -> ((String)x).contains(val));
         return this;
     }
 

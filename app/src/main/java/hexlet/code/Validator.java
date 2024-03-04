@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.schemas.BaseSchema;
 import hexlet.code.schemas.MapSchema;
 import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
@@ -7,17 +8,17 @@ import hexlet.code.schemas.StringSchema;
 import java.util.Map;
 
 
-public class Validator {
-    public StringSchema<String> string() {
+public class Validator<R, T> {
+    public StringSchema<?> string() {
         return new StringSchema<String>();
     }
 
-    public NumberSchema<Number> number() {
+    public NumberSchema<?> number() {
         return new NumberSchema<Number>();
     }
 
-    public MapSchema<?, Map<?,?>> map() {
-        return new MapSchema<>();
+    public MapSchema<R, Map<R,T>> map() {
+        return new MapSchema<R, Map<R,T>>();
     }
 
 }

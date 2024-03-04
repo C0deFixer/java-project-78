@@ -3,8 +3,10 @@ package hexlet.code.schemas;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class MapSchema<T, K extends Map<T, T>> extends BaseSchema<T> {
-    private Map<T, BaseSchema<T>> schemas;
+public class MapSchema<R, T> extends BaseSchema<T> {
+    //public class MapSchema<T, R> extends BaseSchema<Map<T, R>> {
+    private Map<R, BaseSchema<T>> schemas;
+    //private Map<T, BaseSchema<Map<T,R>>> schemas;
 
     public MapSchema() {
         super();
@@ -12,21 +14,22 @@ public class MapSchema<T, K extends Map<T, T>> extends BaseSchema<T> {
 
     @Override
     public BaseSchema<T> required() {
+    //public BaseSchema<Map<T, R>> required() {
         super.required();
-        super.addStrategy(x -> x instanceof Map<?, ?>);
+        strategyList.add(1, x -> x instanceof Map<?, ?>);
         return this;
     }
 
-    public MapSchema<T, K> sizeof(int val) {
-        super.addStrategy(x -> ((K) x).size() >= val);
+    public MapSchema<R, T> sizeof(int val) {
+        strategyList.add(x -> ((Map) x).size() >= val);
         return this;
     }
 
-    public void shape(Map<T, BaseSchema<T>> schemas) {
+    public void shape(Map<R, BaseSchema<T>> schemas) {
         this.schemas = schemas;
     }
 
-    public boolean isValid(Map<T, T> val) {
+    public boolean isValid(Map<R, T> val) {
         if (!super.isValid((T) val)) {
             return false;
         }
@@ -39,7 +42,7 @@ public class MapSchema<T, K extends Map<T, T>> extends BaseSchema<T> {
             return true;
         }
 
-        for (Entry<T, T> entry : val.entrySet()) {
+        for (Entry<R, T> entry : val.entrySet()) {
             if (schemas.containsKey(entry.getKey())) {
                 BaseSchema<T> currentSchema = schemas.get(entry.getKey());
                 T currentValue = entry.getValue();

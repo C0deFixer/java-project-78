@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -103,12 +104,12 @@ class ValidatorTest {
 // shape позволяет описывать валидацию для значений каждого ключа объекта Map
 // Создаем набор схем для проверки каждого ключа проверяемого объекта
 // Для значения каждого ключа - своя схема
-        Map<String, BaseSchema<String>> schemas = new HashMap<>();
+        Map<String, BaseSchema<Object>> schemas = new HashMap<>();
 
 // Определяем схемы валидации для значений свойств "name" и "age"
 // Имя должно быть строкой, обязательно для заполнения
         schemas.put("name", v.string().required());
-// Возраст должен быть положительным числом
+// Возраст должен быть положительным числом, но пока учловие отключено т.к. не вызван метод requried
         schemas.put("age", v.number().positive());
 
 // Настраиваем схему `MapSchema`
@@ -130,6 +131,9 @@ class ValidatorTest {
         human3.put("name", "");
         human3.put("age", null);
         assertThat(schema.isValid(human3)).isFalse(); // false
+
+        //Включаем работу  условия на возвраст
+        schemas.get("age").required();
 
         Map<String, Object> human4 = new HashMap<>();
         human4.put("name", "Valya");

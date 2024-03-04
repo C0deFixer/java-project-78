@@ -1,21 +1,27 @@
 package hexlet.code.schemas;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class BaseSchema<T> {
-    public List<Predicate<T>> strategyList;
+    List<Predicate<T>> strategyList;
+    boolean required = false; //canceling all other verifications by default until required is call
 
     BaseSchema() {
-        this.strategyList = new ArrayList<>();
+        this.strategyList = new LinkedList<>(); //Using LinkedList cause order of Predicate validation may be important
     }
 
     public boolean isValid(T val) {
-        /*return strategyList.stream()
-                .filter(strategy-> strategy.match(val))
+        if (!this.required) {
+            return true;
+        }
+/*        return strategyList.stream()
+                .filter(strategy-> strategy.test(val))
                 .toList()
                 .isEmpty();*/
+        //for debug
         for (int i = 0; i < strategyList.size(); i++) {
             if (!strategyList.get(i).test(val)) {
                 return false;
@@ -25,12 +31,10 @@ public class BaseSchema<T> {
     }
 
     public BaseSchema<T> required() {
-        strategyList.add(val -> val != null);
+        this.required = true;
+        //index 0 null check always first
+        strategyList.add(0, val -> val != null);
         return this;
-    }
-
-    protected void addStrategy(Predicate<T> strategy) {
-        strategyList.add(strategy);
     }
 
 }

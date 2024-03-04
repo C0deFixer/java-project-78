@@ -1,17 +1,25 @@
 package hexlet.code.schemas;
 
-public class NumberSchema<T extends Number> extends BaseSchema<T> {
+public class NumberSchema<T> extends BaseSchema<T> {
     public NumberSchema() {
         super();
     }
 
-    public NumberSchema<T> positive() {
-        super.addStrategy(x -> x == null || x.intValue() > 0);
+    @Override
+    public BaseSchema<T> required() {
+        super.required();
+        //index 1 -> should be next after null check
+        strategyList.add(1, x -> x instanceof Number);
         return this;
     }
 
-    public NumberSchema<T> range(T minValue, T maxValue) {
-        super.addStrategy(x -> x == null || (x.doubleValue() >= minValue.doubleValue()) && (x.doubleValue() <= maxValue.doubleValue()));
+    public NumberSchema<T> positive() {
+        strategyList.add(x -> ((Number)x).intValue() > 0);
+        return this;
+    }
+
+    public NumberSchema<?> range(Number minValue, Number  maxValue) {
+        strategyList.add(x -> (((Number)x).doubleValue() >= minValue.doubleValue()) && (((Number)x).doubleValue() <= maxValue.doubleValue()));
         return this;
     }
 

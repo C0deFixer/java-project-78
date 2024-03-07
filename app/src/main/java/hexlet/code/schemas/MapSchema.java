@@ -1,12 +1,8 @@
 package hexlet.code.schemas;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 public final class MapSchema<R, T> extends BaseSchema<T> {
-    //public class MapSchema<T, R> extends BaseSchema<Map<T, R>> {
-    private Map<R, BaseSchema<T>> schemas;
-    //private Map<T, BaseSchema<Map<T,R>>> schemas;
 
     public MapSchema() {
         super();
@@ -26,7 +22,7 @@ public final class MapSchema<R, T> extends BaseSchema<T> {
         return this;
     }
 
-    public MapSchema<R,T> shape(Map<String, BaseSchema<T>> schemas) {
+    public MapSchema<R, T> shape(Map<String, BaseSchema<T>> schemas) {
         addCheck(
                 "shape",
                 map -> {

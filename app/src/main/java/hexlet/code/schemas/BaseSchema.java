@@ -36,12 +36,13 @@ public class BaseSchema<T> {
         if (!this.required) {
             return true;
         }
-        if (val == null) return false;
-//        return strategyMap.entrySet().stream()
-//                .allMatch(strategy -> strategy.getValue().test(val));
-        //Simpler to debug
+        if (val == null) {
+            return false;
+        }
         for (Map.Entry<String, Predicate<T>> strategy : strategyMap.entrySet()) {
-            if(!strategy.getValue().test(val)) return false;
+            if (!strategy.getValue().test(val)) {
+                return false;
+            }
         }
         return true;
     }

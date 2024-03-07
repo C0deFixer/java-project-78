@@ -1,12 +1,6 @@
-name: Java CI
-
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  - push
+  - pull_request
 
 jobs:
   build:
@@ -14,8 +8,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 20
-        uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           java-version: '20'
           distribution: 'temurin'
@@ -23,17 +16,35 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 8.3
-          arguments: build
-          build-root-directory: app
-        
+      - run: make lint
+      - run: make test
       - name: Publish code coverage
-        if: ${{ github.event_name == 'push' }}
-        uses: paambaati/codeclimate-action@v5.0.0
+        uses: paambaati/codeclimate-action@v3.1.1
         env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-          JACOCO_SOURCE_PATH: ${{github.workspace}}/app/src/main/java
+         CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+         JACOCO_SOURCE_PATH: app/src/main/java
         with:
-          coverageCommand: make report
-          debug: true
-          coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
+         coverageCommand: make report
+         coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
 
+    build.gradle должен содержать:
+
+plugins {
+  id 'application'
+  id 'checkstyle'
+  id 'com.adarshr.test-logger' version '3.0.0'
+  id 'com.github.ben-manes.versions' version '0.39.0'
+  id 'jacoco'
+}
+
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}

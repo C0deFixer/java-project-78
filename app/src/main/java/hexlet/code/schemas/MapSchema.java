@@ -16,25 +16,36 @@ public final class MapSchema<R, T> extends BaseSchema<T> {
     public BaseSchema<T> required() {
         //public BaseSchema<Map<T, R>> required() {
         super.required();
-        strategyList.add(1, x -> x instanceof Map<?, ?>);
+        //addCheck("requied", x -> x instanceof Map<?, ?>);
         return this;
     }
 
     public MapSchema<R, T> sizeof(int val) {
-        strategyList.add(x -> ((Map) x).size() >= val);
+        //addCheck("sizeOff", x -> ((Map) x).size() >= val);
+        addCheck("sizeOff", x -> ((Map) x).size() >= val);
         return this;
     }
 
-    public void shape(Map<R, BaseSchema<T>> schemasMap) {
-        this.schemas = schemasMap;
+    public MapSchema<R,T> shape(Map<String, BaseSchema<T>> schemas) {
+        addCheck(
+                "shape",
+                map -> {
+                    return schemas.entrySet().stream().allMatch(e -> {
+                        var v = ((Map) map).get(e.getKey());
+                        var schema = e.getValue();
+                        return schema.isValid((T) v);
+                    });
+                }
+        );
+        return this;
     }
 
-    public boolean isValid(Map<R, T> val) {
+/*    public boolean isValid(Map<R, T> val) {
         if (!super.isValid((T) val)) {
             return false;
         }
-        for (int i = 0; i < super.strategyList.size(); i++) {
-            if (!strategyList.get(i).test((T) val)) {
+        for (int i = 0; i < super.strategyMap.size(); i++) {
+            if (!strategyMap.get(i).test((T) val)) {
                 return false;
             }
         }
@@ -52,5 +63,5 @@ public final class MapSchema<R, T> extends BaseSchema<T> {
             }
         }
         return true;
-    }
+    }*/
 }

@@ -9,19 +9,19 @@ public final class NumberSchema<T> extends BaseSchema<T> {
     public BaseSchema<T> required() {
         super.required();
         //index 1 -> should be next after null check
-        strategyList.add(1, x -> x instanceof Number);
+        strategyMap.put("requried", x -> x instanceof Number);
         return this;
     }
 
     public NumberSchema<T> positive() {
-        strategyList.add(x -> ((Number) x).intValue() > 0);
+        strategyMap.put("positive", x -> ((Number) x).intValue() > 0);
         return this;
     }
 
-    public NumberSchema<?> range(Number minValue, Number maxValue) {
-        strategyList.add(x ->
-                (((Number) x).doubleValue() >= minValue.doubleValue())
-                        && (((Number) x).doubleValue() <= maxValue.doubleValue()));
+    public NumberSchema<?> range(int minValue, int maxValue) {
+        strategyMap.put("range", x ->
+                (((Number) x).doubleValue() >= minValue)
+                        && (((Number) x).doubleValue() <= maxValue));
         return this;
     }
 

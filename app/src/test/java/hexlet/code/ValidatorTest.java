@@ -114,6 +114,7 @@ class ValidatorTest {
 // Настраиваем схему `MapSchema`
 // Передаем созданный набор схем в метод shape()
         schema.shape(schemas);
+        schema.required();
 
 // Проверяем объекты
         Map<String, Object> human1 = new HashMap<>();
@@ -138,5 +139,16 @@ class ValidatorTest {
         human4.put("name", "Valya");
         human4.put("age", -5);
         assertThat(schema.isValid(human4)).isFalse(); // false
+
+        var codes = new HashMap<String, Integer>();
+        codes.put("usa", 1);
+        codes.put("france", 33);
+        codes.put("germany", 49);
+        var entries = codes.entrySet();
+        for (var entry : entries) {
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
+        }
+
     }
 }

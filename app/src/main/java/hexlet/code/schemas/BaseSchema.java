@@ -1,15 +1,31 @@
 package hexlet.code.schemas;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class BaseSchema<T> {
-    protected List<Predicate<T>> strategyList;
-    protected boolean required = false; //canceling all other verifications by default until required is call
+    // key contains name of strategy checking
+    protected Map<String, Predicate<T>> strategyMap;
+    //canceling all other verifications by default until required is call
+    protected boolean required = false;
 
     BaseSchema() {
-        this.strategyList = new LinkedList<>(); //Using LinkedList cause order of Predicate validation may be important
+        this.strategyMap = new HashMap<>(); //Using LinkedList cause order of Predicate validation may be important
+    }
+
+    /**
+     * @return In subclasses instance verification has to be added
+     */
+    public BaseSchema<T> required() {
+        this.required = true;
+        //strategyMap.put("", val -> val != null);
+        return this;
+    }
+
+    public BaseSchema<T> addCheck(String strategyName, Predicate<T> strategy) {
+        this.strategyMap.put(strategyName, strategy);
+        return this;
     }
 
     /**
@@ -20,28 +36,13 @@ public class BaseSchema<T> {
         if (!this.required) {
             return true;
         }
-/*        return strategyList.stream()
-                .filter(strategy-> strategy.test(val))
-                .toList()
-                .isEmpty();*/
-        //for debug
-        for (int i = 0; i < strategyList.size(); i++) {
-            if (!strategyList.get(i).test(val)) {
-                return false;
-            }
+        if (val == null) return false;
+//        return strategyMap.entrySet().stream()
+//                .allMatch(strategy -> strategy.getValue().test(val));
+        //Simpler to debug
+        for (Map.Entry<String, Predicate<T>> strategy : strategyMap.entrySet()) {
+            if(!strategy.getValue().test(val)) return false;
         }
         return true;
     }
-
-    /**
-     * @return In subclasses instance verification has to be added
-     */
-    public BaseSchema<T> required() {
-        this.required = true;
-        //index 0 null check always first
-        strategyList.add(0, val -> val != null);
-        return this;
-    }
-
-
 }

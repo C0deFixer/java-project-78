@@ -21,7 +21,7 @@ var numberSchema = v.number().range(4,10).positive();
 numberSchema.isValid(-10); // false
 numberSchema.isValid(5); // true
 ```
-> Map schema verification 
+> Map schema verification
 ```Java
 var v = new Validator();
 var mapSchema = v.map();

@@ -19,11 +19,15 @@ public class BaseSchema<T> {
      */
     public BaseSchema<T> required() {
         this.required = true;
-        //strategyMap.put("", val -> val != null);
         return this;
     }
 
-    public BaseSchema<T> addCheck(String strategyName, Predicate<T> strategy) {
+    /**
+     * @param strategyName The name representing
+     * @param strategy new Predicate verification
+     * @return Schema tuned
+     */
+    public final BaseSchema<T> addCheck(String strategyName, Predicate<T> strategy) {
         this.strategyMap.put(strategyName, strategy);
         return this;
     }
